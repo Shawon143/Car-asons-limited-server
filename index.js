@@ -93,6 +93,15 @@ async function run() {
       res.send(cars);
     });
 
+    // get order by CarName
+    app.get("/review", async (req, res) => {
+      const CarName = req.query.CarName;
+      const query = { CarName: CarName };
+      const cursor = reviewsCollection.find(query);
+      const reviews = await cursor.toArray();
+      res.send(reviews);
+    });
+
     // delect orders api
 
     app.delete("/orders/:id", async (req, res) => {
@@ -129,7 +138,7 @@ async function run() {
       res.json(result);
     });
 
-    // get users information api
+    //  update admin role
     app.get("/users/:email", async (req, res) => {
       const email = req.params.email;
       const query = { email: email };
@@ -141,7 +150,7 @@ async function run() {
 
       res.json({ admin: isAdmin });
     });
-    //  update admin role
+    // get users information api
 
     app.put("/users", async (req, res) => {
       const user = req.body;
