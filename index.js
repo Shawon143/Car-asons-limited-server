@@ -68,6 +68,35 @@ async function run() {
       const cars = await carCollection.findOne(query);
       res.json(cars);
     });
+    // get single service
+    app.get("/dashboard/manageproducts/update/:id", async (req, res) => {
+      const id = req.params.id;
+      // console.log("id", id);
+      const query = { _id: objectID(id) };
+      const cars = await carCollection.findOne(query);
+      res.json(cars);
+    });
+
+    // update product
+    app.put("/cars/:id", async (req, res) => {
+      const id = req.params.id;
+      const updateProduct = req.body;
+      const filter = { _id: objectID(id) };
+      const option = { upsert: true };
+      const updateDoc = {
+        $set: {
+          name: updateProduct.name,
+          details: updateProduct.details,
+          img: updateProduct.img,
+          price: updateProduct.price,
+          catagory: updateProduct.catagory,
+        },
+      };
+      const result = await carCollection.updateOne(filter, updateDoc, option);
+      console.log("updating ", req);
+      res.json(result);
+    });
+
     // order single
     app.get("/orders/:id", async (req, res) => {
       const id = req.params.id;
