@@ -12,7 +12,7 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.sfpfh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -26,12 +26,26 @@ async function run() {
     const orderCollection = database.collection("orders");
     const usersCollection = database.collection("users");
     const reviewsCollection = database.collection("reviews");
+    const productCollection = database.collection("products");
 
     // get cars api
     app.get("/cars", async (req, res) => {
       const cursor = carCollection.find({});
       const cars = await cursor.toArray();
       res.send(cars);
+    });
+    // get cars api
+    app.get("/users", async (req, res) => {
+      const cursor = usersCollection.find({});
+      const users = await cursor.toArray();
+      res.send(users);
+    });
+
+    // get cars api
+    app.get("/products", async (req, res) => {
+      const cursor = productCollection.find({});
+      const products = await cursor.toArray();
+      res.send(products);
     });
 
     // post cars
